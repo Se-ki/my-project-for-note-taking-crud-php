@@ -1,36 +1,24 @@
 <?php
 
-use Core\App;
-use Core\Database;
-
-$db = App::resolve(Database::class);
+use Core\Authenticator\Authenticator;
+use Http\Forms\LoginForm;
 
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-$error = [];
+$form = new LoginForm;
 
-$user = $db->query("SELECT * FROM user WHERE email = :email", ["email" => $email])->find();
 
-if (!$user) {
-    $error['user'] = "User is not authenticate.";
-    return view('session/create.php', [
-        'header' => 'Log In',
-        'error' => $error
-    ]);
+if ($form->validate($email, $password)) {
+
+    if ((new Authenticator)->attempt($email, $password)) {
+        redirect('/');
+    } else {
+        $form->error('user', 'Incorrect Credentials.');
+    }
 }
 
-$match_hash = password_verify($password, $user['password']);
-
-if (!$match_hash) {
-    $error['user'] = "User is not authenticate.";
-    return view('session/create.php', [
-        'header' => 'Log In',
-        'error' => $error
-    ]);
-}
-
-login($user);
-
-header('location: /');
-exit();
+return view('sessions/create.php', [
+    'header' => 'Log In',
+    'error' => $form->errors()
+]);

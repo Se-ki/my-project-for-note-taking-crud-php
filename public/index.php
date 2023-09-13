@@ -13,7 +13,9 @@ require base_path("Core/App.php");
 require base_path("Core/Middleware/Middleware.php");
 require base_path("Core/Middleware/Guest.php");
 require base_path("Core/Middleware/Auth.php");
+require base_path("Core/Validator.php");
 require base_path("Http/Forms/LoginForms.php");
+require base_path("Core/Authenticator.php");
 // spl_autoload_register(function ($class) {
 //     $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
 //     require base_path("{$class}.php");
