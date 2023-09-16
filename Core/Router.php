@@ -43,6 +43,11 @@ class Router
         ];
         return $this;
     }
+
+    public function previousUrl()
+    {
+        return $_SERVER['HTTP_REFERER'];
+    }
     public function get($uri, $controller)
     {
         return $this->add($uri, $controller, "GET");

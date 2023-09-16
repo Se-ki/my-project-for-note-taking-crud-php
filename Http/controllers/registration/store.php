@@ -1,33 +1,40 @@
 <?php
 
 use Core\App;
+use Core\Authenticator\Authenticator;
 use Core\Database;
+use Core\Session;
+use Http\Forms\LoginForm;
 
 $db = App::resolve(Database::class);
 
-$email = $_POST['email'];
-$password = $_POST['password'];
+$form = LoginForm::validate($attributes = [
+    "email" => $_POST['email'],
+    "password" => $_POST['password']
+]);
 
-if (!$form->validate($email, $password)) {
-    return view('registration/create.php', [
-        'header' => "Register",
-        'error' => $form->errors()
-    ]);
-}
-
-$user_exist = $db->query("SELECT * FROM user WHERE email = :email", ["email" => $email])->find();
+$user_exist = $db->query(
+    "SELECT * 
+    FROM user 
+    WHERE email = :email",
+    [
+        "email" => $attributes['email']
+    ]
+)->find();
 
 if ($user_exist) {
-    $error['email'] = "Email is already taken.";
+    $form->error("email", 'Email is in already used.')->throw();
 }
 
-$hash = password_hash($password, PASSWORD_BCRYPT);
+$db->query(
+    "INSERT INTO `user` 
+    VALUES (null, :email, :password)",
+    [
+        'email' => $attributes['email'],
+        'password' => password_hash($attributes['password'], PASSWORD_BCRYPT)
+    ]
+)->get();
 
-$db->query("INSERT INTO `user` VALUES (null, :email, :password)", [
-    'email' => $email,
-    'password' => $hash
-])->get();
-
-$user = $db->query("SELECT * FROM user WHERE email = :email", ["email" => $email])->find();
-
-redirect('/');
+// if ((new Authenticator)->attempt($email, $password)) {
+//     redirect('/');
+// }

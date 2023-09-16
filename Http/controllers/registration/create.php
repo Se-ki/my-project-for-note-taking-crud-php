@@ -1,2 +1,8 @@
 <?php
-view('registration/create.php', ['header' => 'Register']);
+
+use Core\Session;
+
+view('registration/create.php', [
+    'header' => 'Register',
+    'error' => Session::get('errors')
+]);

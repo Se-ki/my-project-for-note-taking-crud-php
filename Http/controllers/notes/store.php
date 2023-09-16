@@ -2,8 +2,8 @@
 use Core\Database;
 use Core\Validator;
 use Core\App;
+use Core\Session;
 
-require base_path("Core/Validator.php");
 // $config = require base_path("config.php");
 // $db = new Database($config['database']);
 
@@ -11,27 +11,27 @@ require base_path("Core/Validator.php");
 //Database::class is equivalent to 'Core\Database'
 $db = App::resolve(Database::class);
 
-$errors = [];
-
 if (!Validator::string($_POST['body'], 1, 1000)) {
-    $errors['body'] = "A body of no more than 1,000 characters is required";
+    Session::flash("errors", [
+        "body" => "A body of no more than 1,000 characters is required"
+    ]);
+    redirect('/notes/create');
 }
 
 if (!empty($errors)) {
-    return view("/notes/create.php", [
-        'header' => 'Create a note',
-        'errors' => $errors
-    ]);
-} else {
-    $db->query("INSERT INTO `notes`(`body`, `user_id`) VALUES (:body, :user_id)", [
-        "body" => $_POST['body'],
-        "user_id" => $_SESSION['user']['id']
-    ]) ?? empty($errors);
-    header('location: /notes');
+    // return view("/notes/create.php", [
+    //     'header' => 'Create a note',
+    //     'errors' => $errors
+    // ]);
 }
 
+$db->query(
+    "INSERT INTO `notes`(`body`, `user_id`) 
+    VALUES (:body, :user_id)",
+    [
+        "body" => $_POST['body'],
+        "user_id" => $_SESSION['user']['id']
+    ]
+) ?? empty($errors);
 
-// view("/notes/create.php", [
-//     'header' => 'Create a note',
-//     'errors' => $errors
-// ]);
+redirect('/notes');

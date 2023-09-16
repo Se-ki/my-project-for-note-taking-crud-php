@@ -3,22 +3,21 @@
 use Core\Authenticator\Authenticator;
 use Http\Forms\LoginForm;
 
-$email = $_POST['email'];
-$password = $_POST['password'];
+$form = LoginForm::validate($attributes = [
+    "email" => $_POST['email'],
+    "password" => $_POST['password']
+]);
 
-$form = new LoginForm;
+$signedIn = (new Authenticator)->attempt(
+    $attributes['email'],
+    $attributes['password']
+);
 
-
-if ($form->validate($email, $password)) {
-
-    if ((new Authenticator)->attempt($email, $password)) {
-        redirect('/');
-    } else {
-        $form->error('user', 'Incorrect Credentials.');
-    }
+if (!$signedIn) {
+    $form->error(
+        'email',
+        'Incorrect Credentials.'
+    )->throw(); //looks like a javascript promise chaining
 }
 
-return view('sessions/create.php', [
-    'header' => 'Log In',
-    'error' => $form->errors()
-]);
+redirect('/');

@@ -24,9 +24,9 @@
                     <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Body</label>
                     <div class="mt-2">
                         <textarea id="about" name="body" placeholder="Here's an idea for a note..." rows="3"
-                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"><?= $_POST['body'] ?? "" ?></textarea>
+                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"><?= old('body') ?></textarea>
                         <p class="text-red-500">
-                            <?= $errors['body'] ?? "" ?>
+                            <?= $error['body'] ?? null ?>
                         </p>
                     </div>
                 </div>
