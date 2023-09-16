@@ -1,0 +1,26 @@
+{
+    "name": "seki/php_play",
+    "authors": [
+        {
+            "name": "tian-tian",
+            "email": "cautor3@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/collections": "^10.23"
+    },
+    "autoload":{
+        "psr-4": {
+            "Core\\": "Core/",
+            "Http\\": "Http/"
+        }
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.18"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
