@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Authenticator;
+namespace Core;
 
 use Core\App;
 use Core\Database;
