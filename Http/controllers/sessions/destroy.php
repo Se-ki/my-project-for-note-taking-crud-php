@@ -1,5 +1,5 @@
 <?php
-use Core\Authenticator\Authenticator;
+use Core\Authenticator;
 
 $auth = new Authenticator;
 

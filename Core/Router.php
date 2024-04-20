@@ -1,4 +1,5 @@
 <?php
+
 namespace Core;
 
 use Core\Middleware\Auth;
@@ -14,20 +15,8 @@ class Router
         foreach ($this->routes as $route) {
             if ($route['uri'] === $uri && $route['method'] === strtoupper($method)) {
 
-                // if ($route['middleware']) {
-                //     $middleware = Middleware::MAP[$route['middleware']];
-                //     (new $middleware)->handle();
-                // }
-
                 Middleware::resolve($route['middleware']);
 
-                // if ($route['middleware'] === 'guest') {
-                //     // (new Guest)->handle();
-                // }
-
-                // if ($route['middleware'] === 'auth') {
-                //     (new Auth)->handle();
-                // }
                 return require base_path("Http/controllers/" . $route['controllers']);
             }
         }

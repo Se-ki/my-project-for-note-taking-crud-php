@@ -4,13 +4,17 @@ namespace Core\Middleware;
 
 use Core\Middleware\Auth;
 use Core\Middleware\Guest;
+use Core\Middleware\Admin;
+use Core\Middleware\User;
 
 
 class Middleware
 {
     public const MAP = [
         "guest" => Guest::class,
-        "auth" => Auth::class
+        "auth" => Auth::class,
+        "admin" => Admin::class,
+        "user" => User::class,
     ];
 
     public static function resolve($key)

@@ -4,15 +4,11 @@ namespace Core\Middleware;
 
 // use Core\Session;
 
-class Auth
+class User
 {
     public function handle()
     {
-        // if (Session::has()) {
-        //     header('location: /');
-        //     exit();
-        // }
-        if (!$_SESSION['user'] ?? false) {
+        if ($_SESSION['user']['role'] != 1 || !$_SESSION['user'] ?? false) {
             header('location: /');
             exit();
         }
